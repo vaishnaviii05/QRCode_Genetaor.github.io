@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative QR Code Generator</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb, #3b82f6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: #ffffff;
+        }
+
+        /* Floating Animations */
+        .floating {
+            animation: float 4s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* QR Code Generator Card */
+        .card {
+            background: #ffffff;
+            width: 360px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative Blobs */
+        .blob {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: #3b82f6;
+            opacity: 0.7;
+            border-radius: 50%;
+            filter: blur(50px);
+        }
+
+        .blob1 { top: -50px; left: -50px; }
+        .blob2 { bottom: -50px; right: -50px; }
+
+        /* Title */
+        .card h1 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #2563eb;
+        }
+
+        /* Input Field */
+        textarea {
+            width: 100%;
+            height: 70px;
+            margin: 15px 0;
+            padding: 10px;
+            font-size: 1rem;
+            border: 2px solid #2563eb;
+            border-radius: 8px;
+            background: #f9fafb;
+            color: #1e3a8a;
+            resize: none;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+        }
+
+        /* Button */
+        button {
+            background: linear-gradient(90deg, #2563eb, #1e40af);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #1e40af, #2563eb);
+            transform: scale(1.05);
+        }
+
+        /* QR Code Display */
+        #qrcode {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="card floating">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+        <h1>✨ QR Code Generator ✨</h1>
+        <textarea id="text" placeholder="Enter text or URL here..."></textarea>
+        <button onclick="generateQRCode()">Generate QR Code</button>
+        <div id="qrcode"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        function generateQRCode() {
+            const qrCodeContainer = document.getElementById('qrcode');
+            const text = document.getElementById('text').value;
+
+            // Clear previous QR code
+            qrCodeContainer.innerHTML = '';
+
+            if (!text.trim()) {
+                alert('Please enter some text or a URL to generate the QR code.');
+                return;
+            }
+
+            // Generate QR Code
+            QRCode.toCanvas(text, {
+                width: 200,
+                margin: 2,
+                color: {
+                    dark: '#2563eb', // Blue for the QR code
+                    light: '#ffffff' // White background
+                }
+            }, (error, canvas) => {
+                if (error) {
+                    console.error(error);
+                    alert('Failed to generate QR code.');
+                    return;
+                }
+                qrCodeContainer.appendChild(canvas);
+            });
+        }
+    </script>
+</body>
+</html>
